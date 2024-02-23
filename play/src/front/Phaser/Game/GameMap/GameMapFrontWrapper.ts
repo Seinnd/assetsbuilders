@@ -1202,7 +1202,7 @@ export class GameMapFrontWrapper {
         return areasChange;
     }
 
-    private getDynamicAreasOnPosition(position: { x: number; y: number }, offsetY = 16): DynamicArea[] {
+    public getDynamicAreasOnPosition(position: { x: number; y: number }, offsetY = 16): DynamicArea[] {
         const overlappedDynamicAreas: DynamicArea[] = [];
         for (const dynamicArea of this.dynamicAreas.values()) {
             if (
