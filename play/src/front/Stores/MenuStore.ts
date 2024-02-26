@@ -1,18 +1,18 @@
 import { derived, get, writable } from "svelte/store";
 import {
     CONTACT_URL,
-    OPID_PROFILE_SCREEN_PROVIDER,
     ENABLE_REPORT_ISSUES_MENU,
+    OPID_PROFILE_SCREEN_PROVIDER,
     REPORT_ISSUES_URL,
 } from "../Enum/EnvironmentVariable";
 import type { Translation } from "../../i18n/i18n-types";
 import { localUserStore } from "../Connection/LocalUserStore";
 import { connectionManager } from "../Connection/ConnectionManager";
 import {
-    AddButtonActionBarEvent,
-    RemoveButtonActionBarEvent,
-    AddClassicButtonActionBarEvent,
     AddActionButtonActionBarEvent,
+    AddButtonActionBarEvent,
+    AddClassicButtonActionBarEvent,
+    RemoveButtonActionBarEvent,
 } from "../Api/Events/Ui/ButtonActionBarEvent";
 import { ABSOLUTE_PUSHER_URL } from "../Enum/ComputedConst";
 import { userIsAdminStore } from "./GameStore";
@@ -83,6 +83,7 @@ export const inviteMenu: MenuItem = {
 
 export const inviteUserActivated = writable(true);
 export const mapEditorActivated = writable(false);
+export const mapEditorActivatedForCurrentArea = writable(false);
 
 function createSubMenusStore() {
     const store = writable<MenuItem[]>([
