@@ -69,7 +69,9 @@ export const mapEditorCopiedEntityDataPropertiesStore = writable<EntityDataPrope
 
 export const mapEditorEntityModeStore = writable<MapEditorEntityToolMode>("ADD");
 
-export const mapEditorCurrentAreaIdOnUserPositionStore = writable<string | undefined>(undefined);
+export const mapEditorAreaOnUserPositionStore = writable<
+    { id: string; accessRights: "read" | "write" | "full" } | undefined
+>(undefined);
 
 export enum WAM_SETTINGS_EDITOR_TOOL_MENU_ITEM {
     Megaphone = "Megaphone",
