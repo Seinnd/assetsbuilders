@@ -2,7 +2,6 @@ import { AreaData, EntityData, WAMEntityData } from "@workadventure/map-editor";
 import { EditMapCommandMessage } from "@workadventure/messages";
 import { get } from "svelte/store";
 import {
-    mapEditorAreaOnUserPositionStore,
     mapEditorCopiedEntityDataPropertiesStore,
     mapEditorEntityModeStore,
     mapEditorSelectedEntityStore,
@@ -258,7 +257,7 @@ export class EntityEditorTool extends EntityRelatedEditorTool {
         if (!this.entityPrefabPreview || !this.entityPrefab) {
             return false;
         }
-        const canEntityBePlaced = gameMapFrontWrapper.canEntityBePlaced(
+        return gameMapFrontWrapper.canEntityBePlacedOnMap(
             this.entityPrefabPreview.getTopLeft(),
             this.entityPrefabPreview.displayWidth,
             this.entityPrefabPreview.displayHeight,
@@ -266,17 +265,6 @@ export class EntityEditorTool extends EntityRelatedEditorTool {
             undefined,
             this.shiftKey?.isDown
         );
-        const areaOnUserPosition = get(mapEditorAreaOnUserPositionStore);
-        const canEntityBePlacedInArea =
-            areaOnUserPosition !== undefined &&
-            this.scene
-                .getGameMapFrontWrapper()
-                .canEntityBePlacedInThematicArea(
-                    this.entityPrefabPreview.getTopLeft(),
-                    this.entityPrefabPreview.displayWidth,
-                    this.entityPrefabPreview.displayHeight
-                );
-        return canEntityBePlaced && canEntityBePlacedInArea;
     }
 
     protected changePreviewTint(): void {
@@ -306,6 +294,7 @@ export class EntityEditorTool extends EntityRelatedEditorTool {
             }
             mapEditorSelectedEntityStore.set(undefined);
         }
+
         if (!this.entityPrefabPreview || !this.entityPrefab) {
             return;
         }
