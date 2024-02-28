@@ -1,5 +1,4 @@
 <script lang="ts">
-    import { onDestroy } from "svelte";
     import {
         EntityDataProperties,
         EntityDataPropertiesKeys,
@@ -7,19 +6,19 @@
         EntityDescriptionPropertyData,
         OpenWebsiteTypePropertiesKeys,
     } from "@workadventure/map-editor";
+    import { onDestroy } from "svelte";
     import { ArrowLeftIcon } from "svelte-feather-icons";
-    import { get } from "svelte/store";
     import { LL } from "../../../i18n/i18n-svelte";
+    import { analyticsClient } from "../../Administration/AnalyticsClient";
     import {
         mapEditorEntityModeStore,
         mapEditorSelectedEntityPrefabStore,
         mapEditorSelectedEntityStore,
     } from "../../Stores/MapEditorStore";
-    import { analyticsClient } from "../../Administration/AnalyticsClient";
-    import JitsiRoomPropertyEditor from "./PropertyEditor/JitsiRoomPropertyEditor.svelte";
-    import PlayAudioPropertyEditor from "./PropertyEditor/PlayAudioPropertyEditor.svelte";
-    import OpenWebsitePropertyEditor from "./PropertyEditor/OpenWebsitePropertyEditor.svelte";
     import AddPropertyButtonWrapper from "./PropertyEditor/AddPropertyButtonWrapper.svelte";
+    import JitsiRoomPropertyEditor from "./PropertyEditor/JitsiRoomPropertyEditor.svelte";
+    import OpenWebsitePropertyEditor from "./PropertyEditor/OpenWebsitePropertyEditor.svelte";
+    import PlayAudioPropertyEditor from "./PropertyEditor/PlayAudioPropertyEditor.svelte";
 
     let properties: EntityDataProperties = [];
     let entityName = "";
@@ -200,7 +199,6 @@
     }
 
     function backToSelectObject() {
-        get(mapEditorSelectedEntityStore)?.delete();
         mapEditorSelectedEntityStore.set(undefined);
         mapEditorSelectedEntityPrefabStore.set(undefined);
         mapEditorEntityModeStore.set("ADD");
