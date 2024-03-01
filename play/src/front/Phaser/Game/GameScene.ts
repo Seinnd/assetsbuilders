@@ -17,7 +17,7 @@ import {
 } from "@workadventure/messages";
 import { z } from "zod";
 import { ITiledMap, ITiledMapLayer, ITiledMapObject, ITiledMapTileset } from "@workadventure/tiled-map-type-guard";
-import { GameMap, GameMapProperties, WAMFileFormat } from "@workadventure/map-editor";
+import { EntityPermissions, GameMap, GameMapProperties, WAMFileFormat } from "@workadventure/map-editor";
 import { userMessageManager } from "../../Administration/UserMessageManager";
 import { connectionManager } from "../../Connection/ConnectionManager";
 import { coWebsiteManager } from "../../WebRtc/CoWebsiteManager";
@@ -234,6 +234,8 @@ export class GameScene extends DirtyScene {
 
     private modalVisibilityStoreUnsubscriber!: Unsubscriber;
     private unsubscribers: Unsubscriber[] = [];
+
+    private entityPermissions!: EntityPermissions;
 
     mapUrlFile!: string;
     wamUrlFile?: string;
@@ -883,6 +885,7 @@ export class GameScene extends DirtyScene {
             entitiesInitializedPromise,
         ])
             .then(() => {
+                this.initEntityPermissions();
                 this.hide(false);
                 this.sceneReadyToStartDeferred.resolve();
             })
@@ -896,6 +899,17 @@ export class GameScene extends DirtyScene {
         if (gameManager.currentStartedRoom.backgroundColor != undefined) {
             this.cameras.main.setBackgroundColor(gameManager.currentStartedRoom.backgroundColor);
         }
+    }
+
+    private initEntityPermissions() {
+        const isAdmin = this.connection?.hasTag("admin") ?? false;
+        const isEditor = this.connection?.hasTag("editor") ?? false;
+        const userCanEdit = isAdmin || isEditor;
+        this.entityPermissions = new EntityPermissions(
+            this.getGameMap().getGameMapAreas()!,
+            this.connection?.getAllTags() ?? [],
+            userCanEdit
+        );
     }
 
     private hide(hide = true): void {
@@ -2431,6 +2445,10 @@ ${escapedMessage}
             throw new Error("Trying to access mapUrl before it was fetched");
         }
         return this.mapUrlFile;
+    }
+
+    public getEntityPermissions(): EntityPermissions {
+        return this.entityPermissions;
     }
 
     public async onMapExit(roomUrl: URL) {
